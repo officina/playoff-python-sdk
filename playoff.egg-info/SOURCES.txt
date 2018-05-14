@@ -1,0 +1,14 @@
+README.md
+setup.cfg
+setup.py
+Playoff.egg-info/PKG-INFO
+Playoff.egg-info/SOURCES.txt
+Playoff.egg-info/dependency_links.txt
+Playoff.egg-info/top_level.txt
+playoff/__init__.py
+playoff/playoff.py
+playoff.egg-info/PKG-INFO
+playoff.egg-info/SOURCES.txt
+playoff.egg-info/dependency_links.txt
+playoff.egg-info/top_level.txt
+test/test.py
