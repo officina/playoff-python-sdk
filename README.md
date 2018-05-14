@@ -1,10 +1,10 @@
-![Playoff Python SDK](https://dev.playoff.com/images/assets/pl-python-sdk.png "Playoff Python SDK")
+![Playoff Python SDK](https://dev.playoff.cc/images/assets/pl-python-sdk.png "Playoff Python SDK")
 
 Playoff Python SDK [![PyPI version](https://badge.fury.io/py/playoff.svg)](http://badge.fury.io/py/playoff)
 =================
 This is the official OAuth 2.0 Python client SDK for the Playoff API.
 It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
-For a complete API Reference checkout [Playoff Developers](https://dev.playoff.com/docs/api) for more information.
+For a complete API Reference checkout [Playoff Developers](https://dev.playoff.cc/docs/api) for more information.
 
 >Note: Breaking Changes this is the new version of the sdk which uses the Playoff api v2 by default if you still want to use the v1 api you can do that so by passing a version param with 'v1'
 
@@ -83,7 +83,7 @@ and do a pip install -r requirements.txt
 Using
 -----
 ### Create a client
-  If you haven't created a client for your game yet just head over to [Playoff](http://playoff.com) and login into your account, and go to the game settings and click on client.
+  If you haven't created a client for your game yet just head over to [Playoff](http://playoff.cc) and login into your account, and go to the game settings and click on client.
 
 ## 1. Client Credentials Flow
 In the client page select Yes for both the first and second questions
@@ -321,8 +321,8 @@ A ```PlayoffException``` is thrown whenever an error occurs in each call.The Err
 License
 =======
 Playoff Python SDK v0.4.0  
-http://dev.playoff.com/  
-Copyright(c) 2013-2014, Playoff IT Solutions Pvt. Ltd, support@playoff.com  
+http://dev.playoff.cc/  
+Copyright(c) 2013-2014, Playoff IT Solutions Pvt. Ltd, support@playoff.cc  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

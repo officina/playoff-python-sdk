@@ -3,6 +3,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 's
 
 from playoff import Playoff, PlayoffException
 
+client_id = 'appclient'
+client_secret  ='appsecret'
 
 def test_wrong_init():
   try:
@@ -12,20 +14,20 @@ def test_wrong_init():
       client_secret = "wrong_secret",
       type = 'client'
     )
-  except PlayoffException, e:
+  except PlayoffException as e:
     assert 'Client authentication failed' in e.message
 
 def test_v1():
   pl = Playoff(
     version = 'v1',
-    client_id = "Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
-    client_secret = "YzllYTE5NDQtNDMwMC00YTdkLWFiM2MtNTg0Y2ZkOThjYTZkMGIyNWVlNDAtNGJiMC0xMWU0LWI2NGEtYjlmMmFkYTdjOTI3",
+    client_id = client_id,
+    client_secret = client_secret,
     type = 'client'
   )
 
   try:
     pl.get(route= '/gege', query= { 'player_id': 'student1' })
-  except PlayoffException, e:
+  except PlayoffException as e:
     assert 'route does not exist' in e.message
 
   players = pl.api(method = 'GET', route = '/players', query = { 'player_id': 'student1', 'limit': 1 })
@@ -34,7 +36,7 @@ def test_v1():
 
   try:
     pl.get(route = '/player')
-  except PlayoffException, e:
+  except PlayoffException as e:
     assert "The 'player_id' parameter should be specified in the query" in e.message
 
   player_id = 'student1'
@@ -74,14 +76,14 @@ def test_v1():
 def test_v2():
   pl = Playoff(
     version = 'v2',
-    client_id = "Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
-    client_secret = "YzllYTE5NDQtNDMwMC00YTdkLWFiM2MtNTg0Y2ZkOThjYTZkMGIyNWVlNDAtNGJiMC0xMWU0LWI2NGEtYjlmMmFkYTdjOTI3",
-    type = 'client'
+    client_id=client_id,
+    client_secret=client_secret,
+    type = 'code'
   )
 
   try:
     pl.get(route= '/gege', query= { 'player_id': 'student1' })
-  except PlayoffException, e:
+  except PlayoffException as e:
     assert 'route does not exist' in e.message
 
   players = pl.api(method = 'GET', route = '/runtime/players', query = { 'player_id': 'student1', 'limit': 1 })
@@ -90,7 +92,7 @@ def test_v2():
 
   try:
     pl.get(route = '/runtime/player')
-  except PlayoffException, e:
+  except PlayoffException as e:
     assert "The 'player_id' parameter should be specified in the query" in e.message
 
   player_id = 'student1'
@@ -129,14 +131,14 @@ def test_v2():
 
 
 def store(access_token):
-  print 'Storing'
-  print access_token
+  print('Storing')
+  print(access_token)
 
 def test_store():
   pl = Playoff(
     version = 'v1',
-    client_id = "Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
-    client_secret = "YzllYTE5NDQtNDMwMC00YTdkLWFiM2MtNTg0Y2ZkOThjYTZkMGIyNWVlNDAtNGJiMC0xMWU0LWI2NGEtYjlmMmFkYTdjOTI3",
+    client_id=client_id,
+    client_secret=client_secret,
     type = 'client',
     store = store
   )
@@ -146,33 +148,145 @@ def test_auth():
   try:
     pl = Playoff(
       version = 'v1',
-      client_id = "Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
-      client_secret = "YzllYTE5NDQtNDMwMC00YTdkLWFiM2MtNTg0Y2ZkOThjYTZkMGIyNWVlNDAtNGJiMC0xMWU0LWI2NGEtYjlmMmFkYTdjOTI3",
+      client_id=client_id,
+      client_secret=client_secret,
       type = 'code'
     )
-  except PlayoffException, e:
+  except PlayoffException as e:
     assert e.name == 'init_failed'
 
   pl = Playoff(
     version = 'v1',
-    client_id = "Zjc0MWU0N2MtODkzNS00ZWNmLWEwNmYtY2M1MGMxNGQ1YmQ4",
-    client_secret = "YzllYTE5NDQtNDMwMC00YTdkLWFiM2MtNTg0Y2ZkOThjYTZkMGIyNWVlNDAtNGJiMC0xMWU0LWI2NGEtYjlmMmFkYTdjOTI3",
+    client_id=client_id,
+    client_secret=client_secret,
     type = 'code',
     redirect_uri = 'https://localhost:3000/auth/callback'
   )
-  pl.get_login_url()
+  print(str(pl.get_login_url()))
 
 def test_jwt():
   token = Playoff.createJWT(
-    client_id="MWYwZGYzNTYtZGIxNy00OGM5LWExZGMtZjBjYTFiN2QxMTlh",
-    client_secret="NmM2YTcxOGYtNGE2ZC00ZDdhLTkyODQtYTIwZTE4ZDc5YWNjNWFiNzBiYjAtZmZiMC0xMWU0LTg5YzctYzc5NWNiNzA1Y2E4",
+    client_id=client_id,
+    client_secret=client_secret,
     player_id='student1'
   )
-  print token
+  print(token)
 
-test_wrong_init()
-test_v1()
-test_v2()
-test_auth()
-test_store()
-test_jwt()
+def get_player(player_id):
+  pl = Playoff(
+    client_id=client_id,
+    client_secret=client_secret,
+    type='client',
+    allow_unsecure = True
+
+  )
+  player = pl.get(
+      route='/admin/players/' + player_id,
+      query={}
+  )
+  return player
+
+def get_all_players():
+  pl = Playoff(
+    client_id=client_id,
+    client_secret=client_secret,
+    type='client'
+    ,allow_unsecure=True
+  )
+  players = pl.get(
+      route='/admin/players',
+      query={}
+  )
+  return players
+
+def get_action_template(action_id):
+    pl = Playoff(
+        client_id=client_id,
+        client_secret=client_secret,
+        type='client'
+    )
+    action = pl.get(
+        route='/design/versions/latest/actions/'+action_id,
+        query={}
+    )
+    return action
+
+def create_challenge(challenge_id):
+    pl = Playoff(
+        client_id=client_id,
+        client_secret=client_secret,
+        type='client'
+    )
+    challenge_template_id =  'challenge_template'
+    action = get_action_template(challenge_template_id)
+    action['id'] = challenge_id
+    action['name'] = 'ch1_gen'
+    action['rules'][0]['rewards'][0]['value'] = "110"
+    action['rules'][0]['rewards'][1]['value'] = "120"
+    action['rules'][0]['rewards'][2]['value'] = "130"
+    action['rules'][1]['rewards'][0]['value'] = "0"
+    action['rules'][1]['rewards'][1]['value'] = "0"
+    action['rules'][1]['rewards'][2]['value'] = "0"
+
+    action = pl.post(
+        route='/design/versions/latest/actions',
+        body =action
+    )
+    return action
+
+def update_challenge(challenge_id):
+    pl = Playoff(
+        client_id=client_id,
+        client_secret=client_secret,
+        type='client'
+    )
+    challenge_template_id =  'challenge_template'
+    action = get_action_template(challenge_id)
+    action.pop('id', None)#there cannot be an id for PATCH
+    action['name'] = 'ch1_mod'
+    action['rules'][0]['rewards'][0]['value'] = "1100"
+    action['rules'][0]['rewards'][1]['value'] = "1200"
+    action['rules'][0]['rewards'][2]['value'] = "1300"
+    action['rules'][1]['rewards'][0]['value'] = "0"
+    action['rules'][1]['rewards'][1]['value'] = "0"
+    action['rules'][1]['rewards'][2]['value'] = "0"
+
+    action = pl.patch(
+        route = '/design/versions/latest/actions/'+challenge_id,
+        body = action
+    )
+    return action
+
+def delete_challenge(challenge_id):
+    pl = Playoff(
+        client_id=client_id,
+        client_secret=client_secret,
+        type='client'
+    )
+    challenge_template_id =  'challenge_tmp_max_01'
+    action = get_action_template(challenge_template_id)
+    action['id'] = challenge_id
+
+
+    action = pl.delete(
+        route='/design/versions/latest/actions/'+challenge_id
+    )
+    return action
+#test_wrong_init()
+#test_v1()
+#test_v2()
+
+#test_auth()
+#
+#test_store()
+#test_jwt()
+
+
+# print(get_player('supa'))
+# print(get_all_players())
+# print (get_action_template('challenge_tmp_max_01'))
+# print("ok")
+# #print(delete_challenge('sfida1'))
+# #print(create_challenge('sfida1'))
+# #print(update_challenge('sfida1'))
+

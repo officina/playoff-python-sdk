@@ -56,7 +56,7 @@ def login():
 @app.route("/code")
 def code():
   global pl
-  params = request.args.items()
+  params = list(request.args.items())
   if params[0][1] != None:
     pl.exchange_code(params[0][1])
     session['username'] = "user1"
