@@ -167,18 +167,7 @@ def logout():
   session.pop('username', None)
   return redirect(url_for('login'))
 ```
-## 3. Custom Login Flow using JWT(JSON Web Token)
-In the client page select no for the first question and yes for the second
-![jwt](https://cloud.githubusercontent.com/assets/1687946/7930230/2c2f2caa-0924-11e5-8dcf-aed914a9dd58.png)
-```python
-token = Playoff.createJWT(
-    client_id = 'your client_id', 
-    client_secret = 'your client_secret', 
-    player_id = 'johny', // The player id associated with your user
-    scopes = ['player.runtime.read', 'player.runtime.write'], // The scopes the player has access to
-    expires = 3600; // 1 hour
-})
-```
+
 This is used to create jwt token which can be created when your user is authenticated. This token can then be sent to the frontend and or stored in your session. With this token the user can directly send requests to the Playoff API as the player.
 
 # Client Scopes
