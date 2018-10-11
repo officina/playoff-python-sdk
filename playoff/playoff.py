@@ -36,7 +36,7 @@ class Playoff:
   @staticmethod
   def createJWT(client_id, client_secret, player_id, scopes = [], expires = 3600):
     token = jwt.encode({'player_id': player_id, 'scopes': scopes, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=expires)}, client_secret, algorithm='HS256')
-    token = client_id + ':' + str(token)
+    token = client_id + ':' + str(token.decode('utf8'))
     return token
 
   def __init__(self, client_id, client_secret, type, redirect_uri='', store=None, load=None, version='v2', hostname='playoff.cc', allow_unsecure=False):
@@ -68,7 +68,7 @@ class Playoff:
       data = urllib.parse.urlencode({ 'client_id': self.client_id, 'client_secret': self.client_secret,
         'grant_type': 'authorization_code', 'redirect_uri': self.redirect_uri, 'code': self.code
       }).encode("utf-8")
-    req = urllib.request.Request('https://playoff.cc/auth/token', data, headers)
+    req = urllib.request.Request('https://'+self.hostname+'/auth/token', data, headers)
     try:
       response = urllib.request.urlopen(req).read()
     except URLError as e:
@@ -91,7 +91,7 @@ class Playoff:
     query['access_token'] = access_token['access_token']
     query = urllib.parse.urlencode(query)
     headers = { 'Accept': 'text/json', 'Content-Type': 'application/json' }
-    req = urllib.request.Request("https://api.playoff.cc/%s%s?%s" %(self.version, route, query), json.dumps(body).encode("utf-8"), headers)
+    req = urllib.request.Request("https://api."+ self.hostname +"/%s%s?%s" %(self.version, route, query), json.dumps(body).encode("utf-8"), headers)
     req.get_method = lambda: method.upper()
     response = ''
     try:
@@ -130,7 +130,7 @@ class Playoff:
 
   def get_login_url(self):
     query = urllib.parse.urlencode({ 'response_type': 'code', 'redirect_uri': self.redirect_uri, 'client_id': self.client_id }).encode("utf-8")
-    return "https://playoff.cc/auth?%s" %query
+    return "https://" + self.hostname + "/auth?%s" %query
 
   def exchange_code(self, code):
     self.code = code
