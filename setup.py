@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
   name = 'Playoff',
-  version = '0.7.1',
+  version = '0.7.2',
   packages= ['playoff'],
   description='This is the official OAuth 2.0 Python client SDK for the Playoff API',
   long_description='''

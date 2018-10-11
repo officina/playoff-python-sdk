@@ -52,14 +52,6 @@ class Playoff:
     if store == None:
       self.store = lambda access_token: ''
 
-    if type == 'client':
-      self.get_access_token()
-    else:
-      if len(redirect_uri) == 0:
-        raise PlayoffException('init_failed', 'Please provide a redirect_uri')
-      else:
-        self.redirect_uri = redirect_uri
-
   def get_access_token(self):
     headers = { 'Accept': 'text/json'}
     if self.type == 'client':
@@ -82,16 +74,15 @@ class Playoff:
     if self.load == None:
       self.load = lambda: token
 
-  def api(self, method='GET', route='', query = {}, body={}, raw=False):
+  def api(self, method='GET', route='', query = {}, body={}, raw=False, retry_flag=False):
     access_token = self.load()
     if int(round(time.time())) >= int(access_token['expires_at']):
       print('Access Token Expired')
       self.get_access_token()
       access_token = self.load()
     query['access_token'] = access_token['access_token']
-    query = urllib.parse.urlencode(query)
     headers = { 'Accept': 'text/json', 'Content-Type': 'application/json' }
-    req = urllib.request.Request("https://api."+ self.hostname +"/%s%s?%s" %(self.version, route, query), json.dumps(body).encode("utf-8"), headers)
+    req = urllib.request.Request("https://api."+ self.hostname +"/%s%s?%s" %(self.version, route, urllib.parse.urlencode(query)), json.dumps(body).encode("utf-8"), headers)
     req.get_method = lambda: method.upper()
     response = ''
     try:
@@ -107,6 +98,10 @@ class Playoff:
     except HTTPError as e:
       err = json.loads(e.read())
       e.close()
+      if err['error'] == 'invalid_access_token':
+        self.get_access_token()
+        if not retry_flag:
+          return self.api(method, route, query, body, raw, True)
       raise PlayoffException(err['error'], err['error_description'])
     except URLError as e:
       err = json.loads(e.read())
