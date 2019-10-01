@@ -1,10 +1,10 @@
-![Playoff Python SDK](https://dev.playoff.cc/images/assets/pl-python-sdk.png "Playoff Python SDK")
+![Playoff Python SDK](https://dev.playoffgamification.io/images/assets/pl-python-sdk.png "Playoff Python SDK")
 
 Playoff Python SDK [![PyPI version](https://badge.fury.io/py/playoff.svg)](http://badge.fury.io/py/playoff)
 =================
 This is the official OAuth 2.0 Python client SDK for the Playoff API.
 It supports the `client_credentials` and `authorization code` OAuth 2.0 flows.
-For a complete API Reference checkout [Playoff Developers](https://dev.playoff.cc/docs/api) for more information.
+For a complete API Reference checkout [Playoff Developers](https://dev.playoffgamification.io/docs/api) for more information.
 
 >Note: Breaking Changes this is the new version of the sdk which uses the Playoff api v2 by default if you still want to use the v1 api you can do that so by passing a version param with 'v1'
 
@@ -83,11 +83,11 @@ and do a pip install -r requirements.txt
 Using
 -----
 ### Create a client
-  If you haven't created a client for your game yet just head over to [Playoff](http://playoff.cc) and login into your account, and go to the game settings and click on client.
+  If you haven't created a client for your game yet just head over to [Playoff](https://playoffgamification.io) and login into your account, and go to the game settings and click on client.
 
 ## 1. Client Credentials Flow
 In the client page select Yes for both the first and second questions
-![client](https://cloud.githubusercontent.com/assets/1687946/7930229/2c2f14fe-0924-11e5-8c3b-5ba0c10f066f.png)
+![client](https://dev.playoffgamification.io/images/assets/client.png)
 
 A typical flask app using client credentials code flow with a single route would look something like this
 ```python
@@ -108,7 +108,7 @@ def client():
 
 ## 2. Authorization Code Flow
 In the client page select yes for the first question and no for the second
-![auth](https://cloud.githubusercontent.com/assets/1687946/7930231/2c31c1fe-0924-11e5-8cb5-73ca0a002bcb.png)
+![auth](https://dev.playoffgamification.io/images/assets/auth.png)
 
 In this flow you will have a controller which will get the authorization code and using this the sdk can get the access token. You need a view which will allow your user to login using the playoff platform. And then playoff server with make a get request with the code to your redirect uri. And you should find the code in the query params or the url and exchange the code with the Playoff SDK.
 ```python
@@ -169,7 +169,7 @@ def logout():
 ```
 ## 3. Custom Login Flow using JWT(JSON Web Token)
 In the client page select no for the first question and yes for the second
-![jwt](https://cloud.githubusercontent.com/assets/1687946/7930230/2c2f2caa-0924-11e5-8dcf-aed914a9dd58.png)
+![jwt](https://dev.playoffgamification.io/images/assets/jwt.png)
 ```python
 token = Playoff.createJWT(
     client_id = 'your client_id', 
@@ -182,7 +182,7 @@ token = Playoff.createJWT(
 This is used to create jwt token which can be created when your user is authenticated. This token can then be sent to the frontend and or stored in your session. With this token the user can directly send requests to the Playoff API as the player.
 
 # Client Scopes
-![Client](https://cloud.githubusercontent.com/assets/1687946/9349193/e00fe91c-465f-11e5-8094-6e03c64a662c.png)
+![Client](https://dev.playoffgamification.io/images/assets/client-scopes.png)
 
 Your client has certain access control restrictions. There are 3 kind of resources in the Playoff REST API they are,
 
@@ -321,8 +321,8 @@ A ```PlayoffException``` is thrown whenever an error occurs in each call.The Err
 License
 =======
 Playoff Python SDK v0.4.0  
-http://dev.playoff.cc/  
-Copyright(c) 2013-2014, Playoff IT Solutions Pvt. Ltd, support@playoff.cc  
+https://dev.playoffgamification.io/  
+Copyright(c) 2019, Officina S.r.l., support@playoffgamification.io  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
