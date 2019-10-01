@@ -1,15 +1,15 @@
 Metadata-Version: 1.1
 Name: Playoff
-Version: 0.7.3
+Version: 0.7.6
 Summary: This is the official OAuth 2.0 Python client SDK for the Playoff API
 Home-page: https://github.com/officina/playoff-python-sdk
 Author: Officina
-Author-email: support@playoff.cc
+Author-email: support@playoffgamification.io
 License: UNKNOWN
-Download-URL: https://github.com/officina/playoff-python-sdk/archive/0.7.3.tar.gz
+Download-URL: https://github.com/officina/playoff-python-sdk/archive/0.7.6.tar.gz
 Description: 
             It supports the client_credentials and authorization code OAuth 2.0 flows.
-            For a complete API Reference checkout [Playoff Developers](https://dev.playoff.cc/docs/api) for more information.
+            For a complete API Reference checkout [Playoff Developers](https://dev.playoffgamification.io/docs/api) for more information.
           
 Keywords: REST,Playoff API,Playoff SDK,Gamification
 Platform: UNKNOWN
