@@ -24,7 +24,7 @@ class PlayoffException(Exception):
     return "%s %s" %(self.name, self.message)
 
 class Playoff:
-  hostname = 'playoff.cc'
+  hostname = 'playoffgamification.io'
   client_id = ''
   client_secret = ''
   type = ''
@@ -39,7 +39,7 @@ class Playoff:
     token = client_id + ':' + str(token.decode('utf8'))
     return token
 
-  def __init__(self, client_id, client_secret, type, redirect_uri='', store=None, load=None, version='v2', hostname='playoff.cc', allow_unsecure=False):
+  def __init__(self, client_id, client_secret, type, redirect_uri='', store=None, load=None, version='v2', hostname='playoffgamification.io', allow_unsecure=False):
     self.version = version
     self.client_id = client_id
     self.client_secret = client_secret
