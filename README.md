@@ -76,7 +76,7 @@ pip install playoff
 or if you are using django or flask
 Just add it to your requirements.txt file
 ```python
-playoff==0.4.0
+playoff==0.7.4
 ```
 and do a pip install -r requirements.txt
 
@@ -322,7 +322,7 @@ A ```PlayoffException``` is thrown whenever an error occurs in each call.The Err
 
 License
 =======
-Playoff Python SDK v0.4.0  
+Playoff Python SDK v0.7.4  
 https://dev.playoffgamification.io/  
 Copyright(c) 2019, Officina S.r.l., support@playoffgamification.io  
 
