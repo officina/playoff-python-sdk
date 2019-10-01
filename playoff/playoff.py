@@ -36,7 +36,7 @@ class Playoff:
   @staticmethod
   def createJWT(client_id, client_secret, player_id, scopes = [], expires = 3600):
     token = jwt.encode({'player_id': player_id, 'scopes': scopes, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=expires)}, client_secret, algorithm='HS256')
-    token = client_id + ':' + str(token)
+    token = client_id + ':' + str(token.decode('utf8'))
     return token
 
   def __init__(self, client_id, client_secret, type, redirect_uri='', store=None, load=None, version='v2', hostname='playoff.cc', allow_unsecure=False):
@@ -52,14 +52,6 @@ class Playoff:
     if store == None:
       self.store = lambda access_token: ''
 
-    if type == 'client':
-      self.get_access_token()
-    else:
-      if len(redirect_uri) == 0:
-        raise PlayoffException('init_failed', 'Please provide a redirect_uri')
-      else:
-        self.redirect_uri = redirect_uri
-
   def get_access_token(self):
     headers = { 'Accept': 'text/json'}
     if self.type == 'client':
@@ -68,7 +60,7 @@ class Playoff:
       data = urllib.parse.urlencode({ 'client_id': self.client_id, 'client_secret': self.client_secret,
         'grant_type': 'authorization_code', 'redirect_uri': self.redirect_uri, 'code': self.code
       }).encode("utf-8")
-    req = urllib.request.Request('https://playoff.cc/auth/token', data, headers)
+    req = urllib.request.Request('https://'+self.hostname+'/auth/token', data, headers)
     try:
       response = urllib.request.urlopen(req).read()
     except URLError as e:
@@ -82,16 +74,15 @@ class Playoff:
     if self.load == None:
       self.load = lambda: token
 
-  def api(self, method='GET', route='', query = {}, body={}, raw=False):
+  def api(self, method='GET', route='', query = {}, body={}, raw=False, retry_flag=False):
     access_token = self.load()
     if int(round(time.time())) >= int(access_token['expires_at']):
       print('Access Token Expired')
       self.get_access_token()
       access_token = self.load()
     query['access_token'] = access_token['access_token']
-    query = urllib.parse.urlencode(query)
     headers = { 'Accept': 'text/json', 'Content-Type': 'application/json' }
-    req = urllib.request.Request("https://api.playoff.cc/%s%s?%s" %(self.version, route, query), json.dumps(body).encode("utf-8"), headers)
+    req = urllib.request.Request("https://api."+ self.hostname +"/%s%s?%s" %(self.version, route, urllib.parse.urlencode(query)), json.dumps(body).encode("utf-8"), headers)
     req.get_method = lambda: method.upper()
     response = ''
     try:
@@ -107,6 +98,10 @@ class Playoff:
     except HTTPError as e:
       err = json.loads(e.read())
       e.close()
+      if err['error'] == 'invalid_access_token':
+        self.get_access_token()
+        if not retry_flag:
+          return self.api(method, route, query, body, raw, True)
       raise PlayoffException(err['error'], err['error_description'])
     except URLError as e:
       err = json.loads(e.read())
@@ -130,7 +125,7 @@ class Playoff:
 
   def get_login_url(self):
     query = urllib.parse.urlencode({ 'response_type': 'code', 'redirect_uri': self.redirect_uri, 'client_id': self.client_id }).encode("utf-8")
-    return "https://playoff.cc/auth?%s" %query
+    return "https://" + self.hostname + "/auth?%s" %query
 
   def exchange_code(self, code):
     self.code = code

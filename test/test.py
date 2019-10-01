@@ -3,8 +3,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 's
 
 from playoff import Playoff, PlayoffException
 
-client_id = 'appclient'
-client_secret  ='appsecret'
+client_id = 'clientid'
+client_secret  ='clientsecret'
 
 def test_wrong_init():
   try:
@@ -143,6 +143,14 @@ def test_store():
     store = store
   )
 
+def test_jwt():
+  token = Playoff.createJWT(
+    client_id=client_id,
+    client_secret=client_secret,
+    player_id='fbatista@deloitte.pt'
+  )
+  print("token-> " )
+  print(str(token))
 
 def test_auth():
   try:
@@ -164,26 +172,8 @@ def test_auth():
   )
   print(str(pl.get_login_url()))
 
-def test_jwt():
-  token = Playoff.createJWT(
-    client_id=client_id,
-    client_secret=client_secret,
-    player_id='student1'
-  )
-  print(token)
-
 def get_player(player_id):
-  pl = Playoff(
-    client_id=client_id,
-    client_secret=client_secret,
-    type='client',
-    allow_unsecure = True
-
-  )
-  player = pl.get(
-      route='/admin/players/' + player_id,
-      query={}
-  )
+    
   return player
 
 def get_all_players():
@@ -204,6 +194,8 @@ def get_action_template(action_id):
         client_id=client_id,
         client_secret=client_secret,
         type='client'
+        ,allow_unsecure=True
+        ,hostname='playoffgenerali.it'
     )
     action = pl.get(
         route='/design/versions/latest/actions/'+action_id,
@@ -272,21 +264,18 @@ def delete_challenge(challenge_id):
         route='/design/versions/latest/actions/'+challenge_id
     )
     return action
-#test_wrong_init()
-#test_v1()
-#test_v2()
 
-#test_auth()
+
+test_jwt()
+
+
 #
-#test_store()
-#test_jwt()
 
-
-# print(get_player('supa'))
-# print(get_all_players())
-# print (get_action_template('challenge_tmp_max_01'))
-# print("ok")
-# #print(delete_challenge('sfida1'))
-# #print(create_challenge('sfida1'))
-# #print(update_challenge('sfida1'))
+#print(get_player('supa'))
+#print(get_all_players())
+print (get_action_template('challenge_tmp_max_01'))
+#ch print("ok")
+#print(delete_challenge('sfida1'))
+#print(create_challenge('sfida1'))
+#print(update_challenge('sfida1'))
 
